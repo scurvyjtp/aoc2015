@@ -23,7 +23,7 @@ func main() {
         m := md5.Sum([]byte(t))
         s := hex.EncodeToString(m[:])
 
-        if s[0:5] == "00000"  {
+        if s[0:6] == "00000"  {
             fmt.Printf("Success at %v: %v\n", i,s)
             os.Exit(0)
         }
