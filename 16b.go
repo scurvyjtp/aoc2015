@@ -60,18 +60,13 @@ func checkLine(line string) bool{
 }
 
 func checkVal(x int, y string) bool{
-    if y == "cats" || y == "trees" {
-        if x > tSue[y] {
-            return true
-        }
-    } else if  y == "pomeranians" || y == "goldfish" {
-        if x < tSue[y] {
-            return true
-        }
-    } else {
-        if x == tSue[y] {
-            return true
-        }
+    switch y {
+    case "cats", "trees":
+        if x > tSue[y] { return true }
+    case "pomeranians", "goldfish":
+        if x < tSue[y] { return true }
+    default:
+        if x == tSue[y] { return true }
     }
     return false
 }
