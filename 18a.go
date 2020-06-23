@@ -6,15 +6,17 @@ import (
     "bufio"
 )
 
+const G = 100
+
 func check (e error) {
     if e != nil {
         panic(e)
     }
 }
 
-func printCurr(curr *[100][100]bool) {
-    for i := 0; i < 100; i++ {
-        for j := 0; j < 100; j++ {
+func printCurr(curr *[G][G]bool) {
+    for i := 0; i < G; i++ {
+        for j := 0; j < G; j++ {
             if (*curr)[i][j] == true {
                 fmt.Printf("%c",35)
             } else {
@@ -32,22 +34,22 @@ func btoi (b bool) int {
     return 0
 }
 
-func evalCurr(curr *[100][100]bool, i int, j int) bool{
+func evalCurr(curr *[G][G]bool, i int, j int) bool{
     t := 0
 
     if i != 0 {
         if j != 0  { t += btoi(curr[i-1][j-1]) }
         t += btoi(curr[i-1][j])
-        if j != 99 { t += btoi(curr[i-1][j+1]) }
+        if j != G-1 { t += btoi(curr[i-1][j+1]) }
     }
 
     if j != 0  { t += btoi(curr[i][j-1]) }
-    if j != 99 { t += btoi(curr[i][j+1]) }
+    if j != G-1 { t += btoi(curr[i][j+1]) }
 
-    if i != 99 {
+    if i != G-1 {
         if j != 0  { t += btoi(curr[i+1][j-1]) }
         t += btoi(curr[i+1][j])
-        if j != 99 { t += btoi(curr[i+1][j+1]) }
+        if j != G-1 { t += btoi(curr[i+1][j+1]) }
     }
 
     if curr[i][j] {
@@ -66,19 +68,19 @@ func evalCurr(curr *[100][100]bool, i int, j int) bool{
     return false
 }
 
-func getNext(curr *[100][100]bool, next *[100][100]bool) {
-    for i := 0; i < 100; i++{
-        for j := 0; j < 100; j++{
+func getNext(curr *[G][G]bool, next *[G][G]bool) {
+    for i := 0; i < G; i++{
+        for j := 0; j < G; j++{
             (*next)[i][j] = evalCurr(curr, i, j)
             //fmt.Printf("%v\n", evalCurr(curr, i, j));
         }
     }
 }
 
-func countOn (curr *[100][100]bool) int {
+func countOn (curr *[G][G]bool) int {
     t := 0
-    for i := 0; i < 100; i++{
-        for j := 0; j < 100; j++{
+    for i := 0; i < G; i++{
+        for j := 0; j < G; j++{
             if (*curr)[i][j] {
                 t += 1
             }
@@ -87,7 +89,7 @@ func countOn (curr *[100][100]bool) int {
     return t
 }
 
-func fileToArray (fn string, curr *[100][100]bool) {
+func fileToArray (fn string, curr *[G][G]bool) {
     i := 0
     file, err := os.Open(fn)
     check(err)
@@ -109,16 +111,17 @@ func fileToArray (fn string, curr *[100][100]bool) {
 
 func main() {
     fn := "input/infile18"
-    var curr [100][100]bool
-    var next [100][100]bool
+    var curr [G][G]bool
+    var next [G][G]bool
     var i int
 
     fileToArray(fn, &curr)
-    for i = 0; i < 100; i++ {
-        //printCurr(&curr)
+    for i = 0; i < G; i++ {
+        printCurr(&curr)
         getNext(&curr, &next)
         curr = next
+        fmt.Printf("Total at %v: %v\n",i, countOn(&curr))
     }
-    fmt.Printf("Total at %v: %v\n",i, countOn(&curr))
+
 }
 
