@@ -63,7 +63,7 @@ func popArr (rules map[string][]string, in string, all *[]string) {
             offsets := r.FindAllStringIndex(in, -1)
 
             for _, o := range offsets {
-                out := in[0:o[0]] + rStr + in[o[1]:]
+                out := in[0:o[0]] + tr + in[o[1]:]
                 if !((checkArr(all, out))){
                     (*all) = append((*all), out)
                 }
