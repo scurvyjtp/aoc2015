@@ -25,10 +25,10 @@ func fileToArray (fn string, rules *map[string]string) string {
         m,_ := regexp.MatchString("=>", scanner.Text())
         if m {
             a := strings.Split(scanner.Text()," => ")
-            (*rules)[a[1]] = a[0]
+            (*rules)[reverseString(a[1])] = reverseString(a[0])
         } else {
             if len(scanner.Text()) > 0 {
-                ans = scanner.Text()
+                ans = reverseString(scanner.Text())
             }
         }
     }
@@ -43,7 +43,7 @@ func inToArr(in string) []string {
     for i := 0; i < len(in); i++ {
         if in[i+1] >= 97 && in[i+1] <= 122 {
             j = string(in[i:i+2])
-            i +=1
+            i += 1
         } else {
             j = string(in[i])
         }
@@ -75,9 +75,26 @@ func profileM(m string) {
     fmt.Printf("%v - (%v + %v) - (2 * %v) - 1 = %v\n",tCnt,elCnt["Rn"],elCnt["Ar"],elCnt["Y"],tCnt-(elCnt["Rn"]+elCnt["Ar"])-(2*elCnt["Y"]) -1)
 }
 
+func printRules(rules *map[string]string) {
+    for k,v := range (*rules) {
+        fmt.Printf("%v => %v\n", k,v)
+    }
+}
+func reverseString (in string) string {
+    rs := []rune(in)
+    for i,j := 0, len(rs)-1; i < j;i,j = i+1, j-1 {
+        rs[i], rs[j] = rs[j], rs[i]
+    }
+    return string(rs)
+}
+
 func main() {
     fn := "input/infile19"
     rules := make(map[string]string)
     m := fileToArray(fn,&rules)
-    profileM(m)
+
+    fmt.Printf("%v\n", m)
+
+//    printRules(&rules)
+//    profileM(m)
 }
